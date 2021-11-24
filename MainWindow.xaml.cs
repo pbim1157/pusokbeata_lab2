@@ -22,23 +22,19 @@ namespace pusokbeata_lab2
     public partial class MainWindow : Window
     {
         private DoughnutMachine myDoughnutMachine;
-        private int m_RaisedGlazed;
-        private int m_RaisedSugar;
-        private int m_FilledLemon;
-        private int m_FilledChocolate;
-        private int m_FilledVanilla;
+
+        private int mRaisedGlazed;
+        private int mRaisedSugar;
+        private int mFilledLemon;
+        private int mFilledChocolate;
+        private int mFilledVanilla;
+       
 
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        private void frmMain_Loaded(object sender, RoutedEventArgs e)
-        {
-            myDoughnutMachine = new DoughnutMachine();
-            myDoughnutMachine.DoughnutComplete += new
-            DoughnutMachine.DoughnutCompleteDelegate(DoughnutCompleteHandler);
-        }
+    }
 
         private void glazedToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -59,33 +55,33 @@ namespace pusokbeata_lab2
             {
                 case DoughnutType.Glazed:
                     {
-                        m_RaisedGlazed++;
-                        txtGlazedRaised.Text = m_RaisedGlazed.ToString();
+                        mRaisedGlazed++;
+                        txtGlazedRaised.Text = mRaisedGlazed.ToString();
                         break;
                     }
                 case DoughnutType.Sugar:
                     {
-                        m_RaisedSugar++;
-                        txtSugarRaised.Text = m_RaisedSugar.ToString();
+                        mRaisedSugar++;
+                        txtSugarRaised.Text = mRaisedSugar.ToString();
                         break;
                     }
 
                 case DoughnutType.Lemon:
                     {
-                        m_FilledLemon++;
-                        txtLemonFilled.Text = m_FilledLemon.ToString();
+                        mFilledLemon++;
+                        txtLemonFilled.Text = mFilledLemon.ToString();
                         break;
                     }
                 case DoughnutType.Chocolate:
                     {
-                        m_FilledChocolate++;
-                        txtChocolateFilled.Text = m_FilledChocolate.ToString();
+                        mFilledChocolate++;
+                        txtChocolateFilled.Text = mFilledChocolate.ToString();
                         break;
                     }
                 case DoughnutType.Vanilla:
                     {
-                        m_FilledVanilla++;
-                        txtVanillaFilled.Text = m_FilledVanilla.ToString();
+                        mFilledVanilla++;
+                        txtVanillaFilled.Text = mFilledVanilla.ToString();
                         break;
                     }
                 default:
@@ -93,6 +89,27 @@ namespace pusokbeata_lab2
                         throw new InvalidEnumArgumentException($"Invalid Flavor {myDoughnutMachine.Flavor}");
                     }
             }
+        }
+
+        private void FilledItems_Click(object sender, RoutedEventArgs e)
+        {
+            string DoughnutFlavour;
+
+            MenuItem SelectedItem = (MenuItem)e.OriginalSource;
+            DoughnutFlavour = SelectedItem.Header.ToString();
+
+            Enum.TryParse(DoughnutFlavour, out DoughnutType myFlavour);
+            myDoughnutMachine.MakeDoughnuts(myFlavour);
+
+        }
+
+        private void FilledItemsShow_Click(object sender, RoutedEventArgs e)
+        {
+            string mesaj;
+
+            MenuItem SelectedItem = (MenuItem)e.OriginalSource;
+            mesaj = SelectedItem.Header.ToString() + " doughnuts are being cooked!";
+            this.Title = mesaj;
         }
 
         private void stopToolStripMenuItem_Click(object sender, RoutedEventArgs e)
@@ -112,6 +129,13 @@ namespace pusokbeata_lab2
                 MessageBox.Show("Numai cifre se pot introduce!", "Input Error", MessageBoxButton.OK,
                MessageBoxImage.Error);
             }
+        }
+
+        private void frmMain_Loaded(object sender, RoutedEventArgs e)
+        {
+            myDoughnutMachine = new DoughnutMachine();
+            myDoughnutMachine.DoughnutComplete += new
+            DoughnutMachine.DoughnutCompleteDelegate(DoughnutCompleteHandler);
         }
     }
 }

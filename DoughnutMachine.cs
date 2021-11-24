@@ -18,6 +18,7 @@ namespace pusokbeata_lab2
     }
     class DoughnutMachine : Component
     {
+        private DoughnutType mFlavor;
         private System.Collections.ArrayList mDoughnuts = new System.Collections.ArrayList();
 
         public delegate void DoughnutCompleteDelegate();
@@ -27,55 +28,6 @@ namespace pusokbeata_lab2
         public DoughnutMachine()
         {
             InitializeComponent();
-        }
-
-        public DoughnutType Flavor { get; set; }
-
-
-        public Doughnut this[int Index]
-        {
-            get
-            {
-                return (Doughnut)mDoughnuts[Index];
-
-            }
-            set
-            {
-                mDoughnuts[Index] = value;
-            }
-
-        }
-
-
-        DispatcherTimer doughnutTimer;
-        private void InitializeComponent()
-        {
-            this.doughnutTimer = new DispatcherTimer();
-
-            this.doughnutTimer.Tick += new System.EventHandler(this.doughnutTimer_Tick);
-
-        }
-
-        private void doughnutTimer_Tick(object sender, EventArgs e)
-        {
-            Doughnut aDoughnut = new Doughnut(this.Flavor);
-            mDoughnuts.Add(aDoughnut);
-            DoughnutComplete();
-        }
-
-        public bool Enabled
-        {
-            set
-            {
-                doughnutTimer.IsEnabled = value;
-            }
-        }
-        public int Interval
-        {
-            set
-            {
-                doughnutTimer.Interval = new TimeSpan(0, 0, value);
-            }
         }
 
         public void MakeDoughnuts(DoughnutType dFlavor)
@@ -93,9 +45,60 @@ namespace pusokbeata_lab2
             doughnutTimer.Start();
         }
 
-    }
+        DispatcherTimer doughnutTimer;
+        private void InitializeComponent()
+        {
+            this.doughnutTimer = new DispatcherTimer();
 
-    
+            this.doughnutTimer.Tick += new System.EventHandler(this.doughnutTimer_Tick);
+
+        }
+
+
+        private void doughnutTimer_Tick(object sender, EventArgs e)
+        {
+            Doughnut aDoughnut = new Doughnut(this.Flavor);
+            mDoughnuts.Add(aDoughnut);
+            DoughnutComplete();
+        }
+
+        public DoughnutType Flavor
+        {
+            get => mFlavor;
+            set => mFlavor = value;
+        }
+        public Doughnut this[int Index]
+        {
+            get
+            {
+                return (Doughnut)mDoughnuts[Index];
+
+            }
+            set
+            {
+                mDoughnuts[Index] = value;
+            }
+
+        }
+
+        public bool Enabled
+        {
+            set
+            {
+                doughnutTimer.IsEnabled = value;
+            }
+        }
+        public int Interval
+        {
+            set
+            {
+                doughnutTimer.Interval = new TimeSpan(0, 0, value);
+            }
+        }
+
+       
+
+    }
     class Doughnut
     {
         public Doughnut(DoughnutType aFlavor) // constructor
